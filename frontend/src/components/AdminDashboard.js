@@ -30,7 +30,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="d-flex flex-column h-100">
-      {/* Navbar */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
         <Link className="navbar-brand" to="/">Health Management</Link>
         <button
@@ -65,7 +64,6 @@ const AdminDashboard = () => {
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="flex-grow-1 bg-light p-4 overflow-auto">
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           {stats.map((stat, index) => (
