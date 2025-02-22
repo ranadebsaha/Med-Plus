@@ -41,6 +41,10 @@ function App() {
         <Route path="/admin/update/:id" element={<AdminUpdate />} />
         <Route path="/patient/update/:id" element={<PatientUpdate />} />
         <Route path="/upload/:id" element={<Upload />} />
+        <Route path="/patient/:id" element={<Upload />} />
+        {/* <Route path="/show/:id" element={<Show-Data />} /> */}
+        {/* <Route path="/patient/search" element={<Patie />} /> */}
+        {/* <Route path="/search/:id" element={< />} /> */}
       </Routes>
     </BrowserRouter>
   );

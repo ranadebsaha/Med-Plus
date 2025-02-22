@@ -20,10 +20,10 @@ function PatientUpdate() {
   const params = useParams();
 
   useEffect(() => {
-    getProductDetails();
+    getPatientDetails();
   }, [])
 
-  const getProductDetails = async () => {
+  const getPatientDetails = async () => {
     let result = await fetch(`http://localhost:5000/user/${params.id}`, {
       headers: {
         authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`

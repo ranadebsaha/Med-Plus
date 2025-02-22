@@ -3,13 +3,14 @@ import { FaUserPlus, FaSignInAlt, FaUserEdit } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import("bootstrap/dist/js/bootstrap.bundle.min");
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const user = localStorage.getItem("admin");
+  let admin = JSON.parse(localStorage.getItem('admin'));
 
   useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min");
+    
   }, []);
 
   const logout = () => {
@@ -31,7 +32,7 @@ const AdminDashboard = () => {
   return (
     <div className="d-flex flex-column h-100">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <Link className="navbar-brand" to="/">Health Management</Link>
+        <Link className="navbar-brand" >Health Management</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -46,7 +47,7 @@ const AdminDashboard = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link to="/profile/" className="btn btn-primary me-2">
+              <Link to={'/profile/'+admin._id} className="btn btn-primary me-2">
                 <FaUserPlus className="me-2" /> Profile
               </Link>
             </li>
@@ -56,9 +57,9 @@ const AdminDashboard = () => {
               </button>
             </li>
             <li className="nav-item">
-              <button className="btn btn-info">
+              <Link className="btn btn-info" to={'/admin/update/'+admin._id}>
                 <FaUserEdit className="me-2" /> Update Profile
-              </button>
+              </Link>
             </li>
           </ul>
         </div>
@@ -76,6 +77,11 @@ const AdminDashboard = () => {
               </div>
             </div>
           ))}
+          <li className="nav-item">
+              <Link className="btn btn-info item-center" to={'/admin/update/'+admin._id}>
+                <FaUserEdit className="me-2" /> Check Up Patient
+              </Link>
+            </li>
         </div>
       </main>
     </div>

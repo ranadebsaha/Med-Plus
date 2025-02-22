@@ -43,14 +43,12 @@ function Profile() {
     <div className="container profile-container">
       <Card className="profile-card">
         <Card.Body>
-
           <Card.Title className="text-center text">Profile</Card.Title>
-
           <hr />
           <div className="text-center">
             <img src={user.photo} alt="Profile" className="profile-photo" />
           </div>
-          <Col className='layer' md={6}><strong>ID Number:</strong> {u1 ? user.aadhar :user.govt_id}</Col>
+          <Col className='layer' md={6}><strong>ID Number:</strong> {u1 ? user.aadhar : user.govt_id}</Col>
           <Col md={6}><strong>Name:</strong> {user.name}</Col>
           <Col md={6}><strong>Date of Birth:</strong> {user.dob}</Col>
           <Col md={6}><strong>Gender:</strong> {user.gender}</Col>
