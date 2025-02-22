@@ -1,1 +1,8 @@
-body {}
+body {
+    font-family: "Inter", serif !important;
+    color: black !important;
+}
+
+.main-container {
+    padding-top: 57px;
+}

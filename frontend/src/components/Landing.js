@@ -65,7 +65,7 @@ export default function Landing() {
 
 
     return (
-        <>
+        <div className="main-container">
             <header className="bg-light text-center py-5">
                 <div className="container">
                     <h1 className="display-4 head-text">Efficient Hospital Management</h1>
@@ -197,6 +197,6 @@ export default function Landing() {
                     </Row>
                 </Container>
             </div>
-        </>
+        </div>
     );
 }
