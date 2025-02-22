@@ -1,0 +1,66 @@
+.head-text {
+    font-weight: 600 !important;
+}
+
+.book-btn {
+    font-weight: 500;
+    color: white !important;
+    border: 1px solid #052963 !important;
+    background-color: #052963 !important;
+}
+
+.book-btn:hover {
+    background-color: #fbac1b !important;
+    border: 1px solid #fbac1b !important;
+    color: white !important;
+}
+
+.features-text {
+    font-weight: 600 !important;
+    color: #c2c0c1;
+}
+
+.key-card {
+    background-color: #e5e2db !important;
+    border: 1px solid #c2c0c1 !important;
+}
+
+.learn {
+    background-color: #052963 !important;
+    background: #052963 !important;
+    border: 1px solid #052963 !important;
+}
+
+.learn:hover {
+    background-color: #fbac1b !important;
+    border: 1px solid #fbac1b !important;
+    color: white !important;
+}
+
+.about-p {
+    text-align: justify;
+}
+
+.opt-btn {
+    background-color: #052963 !important;
+    background: #052963 !important;
+    border: 1px solid #052963 !important;
+}
+
+.opt-btn:hover {
+    background-color: #fbac1b !important;
+    border: 1px solid #fbac1b !important;
+    color: white !important;
+}
+
+.submit-btn {
+    background-color: #052963 !important;
+    background: #052963 !important;
+    border: 1px solid #052963 !important;
+}
+
+.submit-btn:hover {
+    background-color: #fbac1b !important;
+    border: 1px solid #fbac1b !important;
+    color: white !important;
+}

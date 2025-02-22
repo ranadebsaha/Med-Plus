@@ -1,0 +1,13 @@
+.footer a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #17a2b8;
+}
+
+.footer p {
+    font-size: 14px;
+}

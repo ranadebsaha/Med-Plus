@@ -1,0 +1,38 @@
+.nav {
+    border-bottom: 1px solid #c2c0c1;
+    background-color: #e5e2db !important;
+}
+
+.menu {
+    border: none !important;
+    padding-right: 0px !important;
+}
+
+.menu-options {
+    align-items: center;
+    font-weight: 500;
+}
+
+.menu-options .nav-link {
+    color: black;
+}
+
+.menu-options .nav-link:hover {
+    color: #fbac1b;
+}
+
+.account {
+    justify-content: center;
+}
+
+.account button {
+    font-weight: 500;
+    color: #052963 !important;
+    border: 1px solid #052963;
+}
+
+.account button:hover {
+    background-color: #fbac1b;
+    border: 1px solid #fbac1b;
+    color: white !important;
+}
