@@ -1,0 +1,20 @@
+.admin-text {
+    color: #052963 !important;
+}
+
+.drop-btn {
+    border: 1px solid #052963 !important;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+}
+
+
+@media (max-width: 576px) {
+    .login-card {
+        padding: 20px;
+    }
+}

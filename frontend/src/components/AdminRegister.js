@@ -45,11 +45,11 @@ function AdminRegister() {
   });
 
   return (
-    <Form className="container">
+    <Form className="container main-container">
       <div className="head">
         <Form.Label className="text">Admin Registration Portal</Form.Label>
         <Form.Label className="underline"></Form.Label>
-        <Form.Label>Depertment</Form.Label>
+        <Form.Label>Department</Form.Label>
         <Dropdown onSelect={(eventKey) => setDept(eventKey)}>
           <Dropdown.Toggle variant="success" id="dropdown-basic">
             {dept}
@@ -63,7 +63,6 @@ function AdminRegister() {
           </Dropdown.Menu>
         </Dropdown>
         {error && !dept && <span>Choose Department</span>}
-
         <Form.Group className="mb-3">
           <Row className="row">
             <Col md={6}>
@@ -77,7 +76,6 @@ function AdminRegister() {
               {error && !name && <span>Enter a valid Name</span>}
             </Col>
           </Row>
-
           <Row className="row">
             <Col md={6}>
               <Form.Label>Date of Birth</Form.Label>
@@ -94,7 +92,6 @@ function AdminRegister() {
               {error && !gender && <span>Choose Gender</span>}
             </Col>
           </Row>
-
           <Row className="row">
             <Col md={6}>
               <Form.Label>Mobile Number</Form.Label>
@@ -108,7 +105,6 @@ function AdminRegister() {
             </Col>
           </Row>
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Row className="row">
             <Col md={6}>
@@ -125,7 +121,6 @@ function AdminRegister() {
         </Form.Group>
         <Form.Label className='forgot-password'>Already Registered?<Link to="/admin/login"> <span>Click here</span></Link></Form.Label>
       </div>
-
       <div className="submit">
         <Button variant="primary" onClick={adminRegister}>
           Register

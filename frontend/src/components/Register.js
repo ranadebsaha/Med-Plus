@@ -43,7 +43,7 @@ function Register() {
   });
 
   return (
-    <Form className="container">
+    <Form className="container main-container">
       <div className="head">
         <Form.Label className="text">Patient Registration Portal</Form.Label>
         <Form.Label className="underline"></Form.Label>
