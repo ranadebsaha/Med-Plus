@@ -166,6 +166,20 @@ app.put("/upload/:id", upload, async (req, resp) => {
     resp.send(result);
 });
 
+// Search Patient
+app.get('/search/:key',verifyToken,async (req,resp)=>{
+    let user=await User.find({
+        "$or":[
+            {aadhar:{$regex:req.params.key}}
+        ]
+    });
+    if(user){
+        resp.send(user);
+    }else{
+        resp.send({result:'No result Found'});
+    }
+});
+
 //Jwt Verification
 function verifyToken(req, resp, next) {
     let token = req.headers['authorization'];

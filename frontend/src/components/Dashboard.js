@@ -21,8 +21,8 @@ const Dashboard = () => {
                 <Link to={'/patient/update/' + user._id} className="btn btn-info w-100 mb-2 d-flex align-items-center">
                     <FaUserEdit className="me-2" /> Update Profile
                 </Link>
-                <Link to={'/upload/' + user._id} className="btn btn-info w-100 mb-2 d-flex align-items-center">
-                    <FaUserEdit className="me-2" /> Upload Documents
+                <Link to={'/show/' + user._id} className="btn btn-info w-100 mb-2 d-flex align-items-center">
+                    <FaUserEdit className="me-2" /> Show Documents
                 </Link>
                 <button onClick={logout} className="btn btn-secondary w-100 mb-2 d-flex align-items-center">
                     <FaSignInAlt className="me-2" /> Logout
