@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
+
 const PatientDetail = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [documents, setDocuments] = useState([]); 
-  const [patient,setPatient]=useState([]);
+  const [patientData,setPatientData]=useState([]);
   const params = useParams();
+  const navigate=useNavigate();
   useEffect(() => {
         getPatientDetails();
       },[]);
@@ -18,9 +21,8 @@ const PatientDetail = () => {
         });
         result = await result.json();
         if(result.doc){
-          // result= result.doc;
-          setPatient(result);
-          // console.log(result.toArry());
+          
+          setPatientData(result);
           const formattedDocs = result.doc.map((file) => {
             try {
               if (typeof file === "string" && file.startsWith("{")) {
@@ -40,7 +42,49 @@ const PatientDetail = () => {
           setDocuments(formattedDocs);
         }
     }
-
+const updateHistory= async()=>{
+const { value: cause } = await Swal.fire({
+  title: "Enter the Disease of this Patient",
+  input: "text",
+  inputLabel: "Disease of this Patient",
+  showCancelButton: true,
+  inputValidator: (value) => {
+    if (!value) {
+      return "You need to write the Disease";
+    }
+  }
+});
+if (cause) {
+  const date = new Date().toISOString();
+  let patient={
+    aadhar: patientData.aadhar,
+    date: date,
+    cause:cause
+  }
+  let adminData = localStorage.getItem('admin');
+  let admin_id = JSON.parse(adminData)._id;
+  console.log("Sending admin_id:", admin_id);
+  let resultA = await fetch('http://localhost:5000/admin/patient', {
+    method: 'put',
+    body: JSON.stringify({ patient, admin_id }),
+    headers: {
+      'content-type': 'application/json',
+      authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+    }
+  });
+  // let resultP = await fetch(`http://localhost:5000/patient/history/${params.id}`, {
+  //   method: 'put',
+  //   body: JSON.stringify({patient}),
+  //   headers: {
+  //     'content-type': 'application/json',
+  //     authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+  //   }
+  // });
+  if(resultA){
+    navigate(-1);
+  }
+}
+}
 
 
   return (
@@ -54,15 +98,15 @@ const PatientDetail = () => {
             <tbody>
               <tr>
                 <th>Name</th>
-                <td>{patient.name}</td>
+                <td>{patientData.name}</td>
               </tr>
               <tr>
-                <th>Age</th>
-                {/* <td>{mockPatient.age}</td> */}
+                <th>Date Of Birth</th>
+                <td>{patientData.dob}</td>
               </tr>
               <tr>
                 <th>Aadhar Card</th>
-                <td>{patient.aadhar}</td>
+                <td>{patientData.aadhar}</td>
               </tr>
             </tbody>
           </table>
@@ -71,7 +115,7 @@ const PatientDetail = () => {
       <div className="card shadow-sm">
         <div className="card-header bg-primary text-white">
           <h4>Your Documents</h4>
-          <Link to={'/upload/'+patient._id}>Upload Documents</Link>
+          <Link to={'/upload/'+patientData._id}>Upload Documents</Link>
         </div>
         <div className="card-body">
           <div className="d-flex gap-3 flex-wrap">
@@ -116,7 +160,7 @@ const PatientDetail = () => {
       )}
     </div>
           <div className="mt-3 d-flex justify-content-end gap-2">
-            <button className="btn btn-success" onClick={() => alert("Check-up confirmed!")}>Check Up</button>
+            <button className="btn btn-success" onClick={updateHistory}>Check Up</button>
             <Link to={'/patient/search'} className="btn btn-danger">Cancel</Link>
           </div>
         </div>
