@@ -43,10 +43,10 @@ function AdminRegister() {
   }, [navigate]);
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light px-3">
-      <Card className="p-4 shadow-lg rounded register-card">
+    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light px-3" style={{ paddingTop: "80px", paddingBottom: "40px" }}>
+      <Card className="p-4 shadow-lg rounded register-card" >
         <Card.Body>
-          <h2 className="text-center mb-4 text-primary">Admin Registration</h2>
+          <h2 className="text-center mb-4">Admin Registration</h2>
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>Department</Form.Label>
@@ -93,22 +93,8 @@ function AdminRegister() {
                   <Form.Label>Gender</Form.Label>
                   <div className="gender-options">
                     <Form.Check inline type="radio" label="Male" value="male" name="gender" onChange={(e) => setGender(e.target.value)} />
-                    <Form.Check
-                      inline
-                      type="radio"
-                      label="Female"
-                      value="female"
-                      name="gender"
-                      onChange={(e) => setGender(e.target.value)}
-                    />
-                    <Form.Check
-                      inline
-                      type="radio"
-                      label="Other"
-                      value="others"
-                      name="gender"
-                      onChange={(e) => setGender(e.target.value)}
-                    />
+                    <Form.Check inline type="radio" label="Female" value="female" name="gender" onChange={(e) => setGender(e.target.value)} />
+                    <Form.Check inline type="radio" label="Other" value="others" name="gender" onChange={(e) => setGender(e.target.value)} />
                   </div>
                   {error && !gender && <span className="text-danger">Choose Gender</span>}
                 </Form.Group>
@@ -118,24 +104,14 @@ function AdminRegister() {
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Mobile Number</Form.Label>
-                  <Form.Control
-                    type="number"
-                    value={mobile_no}
-                    onChange={(e) => setMobile_no(e.target.value)}
-                    placeholder="Enter Mobile Number"
-                  />
+                  <Form.Control type="number" value={mobile_no} onChange={(e) => setMobile_no(e.target.value)} placeholder="Enter Mobile Number" />
                   {error && !mobile_no && <span className="text-danger">Enter a valid Mobile No</span>}
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Email ID</Form.Label>
-                  <Form.Control
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter Email"
-                  />
+                  <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter Email" />
                   {error && !email && <span className="text-danger">Enter a valid Email</span>}
                 </Form.Group>
               </Col>
@@ -144,30 +120,20 @@ function AdminRegister() {
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter Password"
-                  />
+                  <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter Password" />
                   {error && !password && <span className="text-danger">Enter Password</span>}
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Confirm Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    value={cpassword}
-                    onChange={(e) => setCpassword(e.target.value)}
-                    placeholder="Confirm Password"
-                  />
+                  <Form.Control type="password" value={cpassword} onChange={(e) => setCpassword(e.target.value)} placeholder="Confirm Password" />
                   {error && !cpassword && <span className="text-danger">Confirm Password</span>}
                 </Form.Group>
               </Col>
             </Row>
             <div className="d-grid mt-3">
-              <Button variant="primary" size="lg" onClick={adminRegister}>
+              <Button variant="primary" size="lg" className="register-btn" onClick={adminRegister}>
                 Register
               </Button>
             </div>

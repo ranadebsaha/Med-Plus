@@ -1,5 +1,6 @@
 import React from "react";
 import './MyNavbar.css';
+import Logo from "../assets/Logo.svg"
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
@@ -35,7 +36,9 @@ const MyNavbar = () => {
     return (
         <Navbar variant="light" expand="lg" className="nav fixed-top">
             <Container>
-                <Navbar.Brand as={Link} to="/">Hospital</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">
+                    <img src={Logo} alt="Logo" height="15" />
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" className="menu" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto menu-options">

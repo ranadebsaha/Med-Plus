@@ -1,6 +1,6 @@
 .nav {
     border-bottom: 1px solid #c2c0c1;
-    background-color: #e5e2db !important;
+    background-color: white !important;
 }
 
 .menu {
@@ -18,7 +18,7 @@
 }
 
 .menu-options .nav-link:hover {
-    color: #fbac1b;
+    color: #2b65f0;
 }
 
 .account {
@@ -27,12 +27,12 @@
 
 .account button {
     font-weight: 500;
-    color: #052963 !important;
-    border: 1px solid #052963;
+    color: #2b65f0 !important;
+    border: 1px solid #2b65f0;
 }
 
 .account button:hover {
-    background-color: #fbac1b;
-    border: 1px solid #fbac1b;
+    background-color: #163aac;
+    border: 1px solid #163aac;
     color: white !important;
 }
