@@ -58,7 +58,7 @@ const Upload = () => {
         result = await result.json();
         if (result) {
             alert(`Uploading: ${file.name} as ${fileType} ${fileType === "Other" && otherDetails ? `with details: ${otherDetails}` : ''}`);
-            navigate('/patient/search');
+            navigate(-1);
         }
 
     };

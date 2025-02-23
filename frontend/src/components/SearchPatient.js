@@ -23,29 +23,6 @@ const SearchPatient = () => {
     navigate(-1);
   };
 
-  // const formatAadhar = (aadhar) => aadhar.replace(/(\d{4})(\d{4})(\d{4})/, "$1 $2 $3");
-
-  // const handleSearch = () => {
-  //   if (/^\d{12}$/.test(searchTerm.replace(/\s/g, ""))) {
-  //     const formattedAadhar = formatAadhar(searchTerm.replace(/\s/g, ""));
-  //     const mockPatients = [
-  //       { name: "John Doe", age: 45, aadhar: formattedAadhar },
-  //       { name: "Jane Smith", age: 38, aadhar: formattedAadhar },
-  //       { name: "Robert Brown", age: 50, aadhar: formattedAadhar }
-  //     ];
-  //     setPatientData(mockPatients);
-  //   } else {
-  //     alert("Please enter a valid 12-digit Aadhar number.");
-  //     setPatientData([]);
-  //   }
-  // };
-
-  // const handleInputChange = (e) => {
-  //   const value = e.target.value.replace(/\D/g, "").slice(0, 12);
-  //   const formattedValue = value.replace(/(\d{4})(?=\d)/g, "$1 ");
-  //   setSearchTerm(formattedValue);
-  // };
-
   const searchHandle = async (event) => {
     let key = event.target.value;
     if (key) {
@@ -59,7 +36,7 @@ const SearchPatient = () => {
             setPatientData(result);
         }
     }else{
-      
+      setPatientData([]);
     }
 
 };
@@ -118,8 +95,8 @@ const SearchPatient = () => {
             <div key={index} className="card shadow p-4 mb-3">
               <h4 className="text-center mb-3">Patient Details</h4>
               <ul className="list-group list-group-flush">
-                {/* <li className="list-group-item"><strong>Name:</strong> {patient.name}</li> */}
-                <li className="list-group-item"><strong>Age:</strong> {patient.age}</li>
+              <li className="list-group-item"><strong>Name:</strong> Patient A</li>
+                <li className="list-group-item"><strong>Date Of Birth:</strong> {patient.dob}</li>
                 <li className="list-group-item"><strong>Aadhar Number:</strong> {patient.aadhar}</li>
               </ul>
               <Link to={'/admin/patient/show/'+patient._id}>Show Patient Details</Link>
