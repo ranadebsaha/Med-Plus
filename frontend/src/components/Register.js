@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import "./Register.css";
+import "../styles/Register.css";
 
 function Register() {
   const [aadhar, setAadhar] = useState("");

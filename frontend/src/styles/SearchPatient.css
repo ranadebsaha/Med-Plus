@@ -1,0 +1,28 @@
+.menu {
+    border: none !important;
+}
+
+.back-btn {
+    font-weight: 500;
+    background-color: #2b65f0 !important;
+    border: 1px solid #2b65f0;
+    color: white;
+}
+
+.back-btn:hover {
+    background-color: #163aac !important;
+    border: 1px solid #163aac;
+    color: white !important;
+}
+
+.logout-btn {
+    font-weight: 500;
+    background-color: #eb4a40 !important;
+    border: 1px solid #eb4a40;
+}
+
+.logout-btn:hover {
+    background-color: #c62c1d !important;
+    border: 1px solid #c62c1d;
+    color: white !important;
+}

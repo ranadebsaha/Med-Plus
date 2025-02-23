@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import { Link, useNavigate } from "react-router-dom";
-import './Login.css';
+import '../styles/Login.css';
 
 function Login() {
   const [email, setEmail] = useState("");

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Image, Card, Form } from "react-bootstrap";
-import "./Landing.css";
+import "../styles/Landing.css";
 
 export default function Landing() {
     // const [name, setName] = useState("");
