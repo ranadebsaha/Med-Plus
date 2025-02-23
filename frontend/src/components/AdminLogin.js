@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Card from 'react-bootstrap/Card';
 import { Link, useNavigate } from "react-router-dom";
-import './AdminLogin.css';
+import '../styles/AdminLogin.css';
 
 function AdminLogin() {
   const departments = ["Doctor", "Admin", "Staff", "Nurse"];

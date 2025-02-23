@@ -8,12 +8,12 @@
     background: #ffffff;
 }
 
-.login-btn{
+.login-btn {
     color: white !important;
     border: 1px solid #2b65f0 !important;
 }
 
-.login-btn:hover{
+.login-btn:hover {
     background-color: #163aac !important;
     border: 1px solid #163aac !important;
     color: white !important;
