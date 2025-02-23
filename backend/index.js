@@ -7,12 +7,14 @@ require('./db/config');
 const User = require('./db/User');
 const Admin = require('./db/Admin');
 const jwt = require('jsonwebtoken');
+const { json } = require('stream/consumers');
 const jwtkey = 'rds';
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //User Register
 app.post("/register", async (req, resp) => {
@@ -151,6 +153,8 @@ const upload = multer({
         },
         filename: async function (req, file, cb) {
             let user = await User.findOne({ _id: req.params.id });
+            const fileExt = path.extname(file.originalname);
+
             let finalFileName=`${user.aadhar}-${file.originalname}`;
             cb(null, finalFileName);
         }
@@ -158,9 +162,14 @@ const upload = multer({
 }).single("file");
 
 app.put("/upload/:id", upload, async (req, resp) => {
+    
+    // let file1='/uploads/'+req.file.filename;
+    const fileExt = path.extname(req.file.filename).toLowerCase(); 
+            const fileType = fileExt === ".pdf" ? "pdf" : "image";
+            const fileUrl = `/uploads/${req.file.filename}`;
     let result = await User.findByIdAndUpdate(
         req.params.id,
-        { $push: { doc: req.file.filename } },
+        { $push: { doc: JSON.stringify({ name: req.file.filename, type: fileType, url: fileUrl }) } },
         { new: true }
     );
     resp.send(result);

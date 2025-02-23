@@ -9,7 +9,13 @@ const userSchema=new mongoose.Schema({
     email:String,
     address:String,
     password:String,
-    doc:[{ type: String }]
+    doc: [
+        {
+          name: String,
+          type: String,
+          url: String,
+        },
+      ],
 });
 
 module.exports=mongoose.model("users",userSchema);

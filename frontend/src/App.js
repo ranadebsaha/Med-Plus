@@ -12,8 +12,11 @@ import RegisterAdmin from "./components/AdminRegister";
 import LoginAdmin from "./components/AdminLogin";
 import AdminUpdate from "./components/AdminUpdate";
 import PatientUpdate from "./components/PatientUpdate";
+import ShowPatientData from "./components/ShowPatientData";
 import Upload from "./components/Upload";
 import Profile from "./components/Profile";
+import SearchPatient from "./components/SearchPatient";
+import PatientDetail from "./components/PatientDetail";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -41,9 +44,9 @@ function App() {
         <Route path="/admin/update/:id" element={<AdminUpdate />} />
         <Route path="/patient/update/:id" element={<PatientUpdate />} />
         <Route path="/upload/:id" element={<Upload />} />
-        <Route path="/patient/:id" element={<Upload />} />
-        {/* <Route path="/show/:id" element={<Show-Data />} /> */}
-        {/* <Route path="/patient/search" element={<Patie />} /> */}
+        <Route path="/admin/patient/show/:id" element={<PatientDetail />} />
+        <Route path="/patient/show/:id" element={<ShowPatientData />} />
+        <Route path="/patient/search" element={<SearchPatient />} />
         {/* <Route path="/search/:id" element={< />} /> */}
       </Routes>
     </BrowserRouter>

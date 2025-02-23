@@ -78,7 +78,7 @@ const AdminDashboard = () => {
             </div>
           ))}
           <li className="nav-item">
-              <Link className="btn btn-info item-center" to={'/admin/update/'+admin._id}>
+              <Link className="btn btn-info item-center" to={'/patient/search'}>
                 <FaUserEdit className="me-2" /> Check Up Patient
               </Link>
             </li>
