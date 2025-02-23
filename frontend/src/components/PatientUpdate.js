@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import './PatientUpdate.css'
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 

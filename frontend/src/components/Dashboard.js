@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaUserPlus, FaSignInAlt, FaUserEdit } from 'react-icons/fa';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {

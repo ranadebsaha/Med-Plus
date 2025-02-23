@@ -6,3 +6,14 @@ body {
 .main-container {
     padding-top: 57px;
 }
+
+.update-btn{
+    background-color: #5d9e51 !important;
+    color: white !important;
+    border: 1px #5d9e51 !important;
+}
+
+.update-btn:hover{
+    background-color: #457b3c !important;
+
+}

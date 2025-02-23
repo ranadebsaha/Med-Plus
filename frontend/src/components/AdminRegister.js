@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Dropdown, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import "./AdminRegister.css";
 
 function AdminRegister() {
   const departments = ["Doctor", "Admin", "Staff", "Nurse"];
@@ -14,18 +13,19 @@ function AdminRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
+  const [hospital, setHospital] = useState("");
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const adminRegister = async () => {
-    if (!dept || !govt_id || !name || !dob || !gender || !mobile_no || !email || !password || !cpassword) {
+    if (!dept || !govt_id || !name || !dob || !gender || !mobile_no || !email || !password || !cpassword || !hospital) {
       setError(true);
       return;
     }
 
     let result = await fetch("http://localhost:5000/admin/register", {
       method: "POST",
-      body: JSON.stringify({ dept, govt_id, name, dob, gender, mobile_no, email, password }),
+      body: JSON.stringify({ dept, govt_id, name, dob, gender, mobile_no, email, password, hospital }),
       headers: { "Content-Type": "application/json" },
     });
 
@@ -63,6 +63,11 @@ function AdminRegister() {
                 </Dropdown.Menu>
               </Dropdown>
               {error && !dept && <span className="text-danger">Choose Department</span>}
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Hospital/Center Name</Form.Label>
+              <Form.Control type="text" value={hospital} onChange={(e) => setHospital(e.target.value)} placeholder="Enter Hospital/Center Name" />
+              {error && !hospital && <span className="text-danger">Enter Hospital/Center Name</span>}
             </Form.Group>
             <Row>
               <Col md={6}>
