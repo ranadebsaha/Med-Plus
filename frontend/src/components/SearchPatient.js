@@ -6,7 +6,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 
 const SearchPatient = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
   const [patientData, setPatientData] = useState([]);
 
   useEffect(() => {
@@ -16,7 +15,7 @@ const SearchPatient = () => {
   const logout = () => {
     if (window.confirm("Are you sure you want to log out?")) {
       localStorage.clear();
-      navigate("/");
+      navigate("/admin/login");
     }
   };
 
@@ -24,28 +23,47 @@ const SearchPatient = () => {
     navigate(-1);
   };
 
-  const formatAadhar = (aadhar) => aadhar.replace(/(\d{4})(\d{4})(\d{4})/, "$1 $2 $3");
+  // const formatAadhar = (aadhar) => aadhar.replace(/(\d{4})(\d{4})(\d{4})/, "$1 $2 $3");
 
-  const handleSearch = () => {
-    if (/^\d{12}$/.test(searchTerm.replace(/\s/g, ""))) {
-      const formattedAadhar = formatAadhar(searchTerm.replace(/\s/g, ""));
-      const mockPatients = [
-        { name: "John Doe", age: 45, aadhar: formattedAadhar },
-        { name: "Jane Smith", age: 38, aadhar: formattedAadhar },
-        { name: "Robert Brown", age: 50, aadhar: formattedAadhar }
-      ];
-      setPatientData(mockPatients);
-    } else {
-      alert("Please enter a valid 12-digit Aadhar number.");
-      setPatientData([]);
+  // const handleSearch = () => {
+  //   if (/^\d{12}$/.test(searchTerm.replace(/\s/g, ""))) {
+  //     const formattedAadhar = formatAadhar(searchTerm.replace(/\s/g, ""));
+  //     const mockPatients = [
+  //       { name: "John Doe", age: 45, aadhar: formattedAadhar },
+  //       { name: "Jane Smith", age: 38, aadhar: formattedAadhar },
+  //       { name: "Robert Brown", age: 50, aadhar: formattedAadhar }
+  //     ];
+  //     setPatientData(mockPatients);
+  //   } else {
+  //     alert("Please enter a valid 12-digit Aadhar number.");
+  //     setPatientData([]);
+  //   }
+  // };
+
+  // const handleInputChange = (e) => {
+  //   const value = e.target.value.replace(/\D/g, "").slice(0, 12);
+  //   const formattedValue = value.replace(/(\d{4})(?=\d)/g, "$1 ");
+  //   setSearchTerm(formattedValue);
+  // };
+
+  const searchHandle = async (event) => {
+    let key = event.target.value;
+    if (key) {
+        let result = await fetch(`http://localhost:5000/search/${key}`,{
+            headers:{
+                authorization:`bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
+        });
+        result = await result.json();
+        if (result) {
+            setPatientData(result);
+        }
+    }else{
+      
     }
-  };
 
-  const handleInputChange = (e) => {
-    const value = e.target.value.replace(/\D/g, "").slice(0, 12);
-    const formattedValue = value.replace(/(\d{4})(?=\d)/g, "$1 ");
-    setSearchTerm(formattedValue);
-  };
+};
+
 
   return (
     <div className="d-flex flex-column min-vh-100">
@@ -85,27 +103,33 @@ const SearchPatient = () => {
               type="text"
               className="form-control form-control-lg shadow-sm border p-3"
               placeholder="Enter 12-digit Aadhar number..."
-              value={searchTerm}
-              onChange={handleInputChange}
-              maxLength={14}
+              // value={searchTerm}
+              onChange={searchHandle}
+              // maxLength={14}
             />
-            <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+            {/* <button className="btn btn-primary" onClick={handleSearch}>Search</button> */}
           </div>
         </div>
       </div>
 
       <main className="flex-grow-1 bg-light p-4">
         <div className="container">
-          {patientData.length > 0 && patientData.map((patient, index) => (
+          {patientData.length > 0 ? patientData.map((patient, index) => (
             <div key={index} className="card shadow p-4 mb-3">
               <h4 className="text-center mb-3">Patient Details</h4>
               <ul className="list-group list-group-flush">
-                <li className="list-group-item"><strong>Name:</strong> {patient.name}</li>
+                {/* <li className="list-group-item"><strong>Name:</strong> {patient.name}</li> */}
                 <li className="list-group-item"><strong>Age:</strong> {patient.age}</li>
                 <li className="list-group-item"><strong>Aadhar Number:</strong> {patient.aadhar}</li>
               </ul>
+              <Link to={'/admin/patient/show/'+patient._id}>Show Patient Details</Link>
+              <button onClick={goBack} className="btn btn-primary">
+                <FaArrowLeft className="me-2" /> Back
+              </button>
             </div>
-          ))}
+          )) :
+          <h1> No Patient Found</h1>
+          }
         </div>
       </main>
     </div>
