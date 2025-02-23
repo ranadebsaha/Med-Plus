@@ -4,15 +4,15 @@ import { Container, Row, Col, Button, Image, Card, Form } from "react-bootstrap"
 import "../styles/Landing.css";
 
 export default function Landing() {
-    const [name, setName] = useState("");
-    const [date, setDate] = useState("");
-    const [department, setDepartment] = useState("");
+    // const [name, setName] = useState("");
+    // const [date, setDate] = useState("");
+    // const [department, setDepartment] = useState("");
     const navigate = useNavigate();
 
-    const handleAppointmentSubmit = (e) => {
-        e.preventDefault();
-        alert(`Appointment booked for ${name} on ${date}`);
-    };
+    // const handleAppointmentSubmit = (e) => {
+    //     e.preventDefault();
+    //     alert(`Appointment booked for ${name} on ${date}`);
+    // };
 
     const handleContactSubmit = (e) => {
         e.preventDefault();
@@ -22,19 +22,19 @@ export default function Landing() {
 
     const servicesData = [
         {
-            title: "Live OPD Queue",
-            description: "Track real-time queue status and estimated wait times.",
+            title: "Centralized Database",
+            description: "All in one access point for public and private medical sector.",
             icon: "🩺",
         },
         {
-            title: "Bed Availability",
-            description: "Instant updates on available beds and admission requests.",
-            icon: "🛏️",
+            title: "Paperless Initiative",
+            description: "Reduce your overhead for medical paperworks!",
+            icon: "📄",
         },
         {
-            title: "Medicine Tracking",
-            description: "Automated inventory management for medicine and consumables.",
-            icon: "💊",
+            title: "Seamless Security",
+            description: "On the go verification for checkups.",
+            icon: "🛡️",
         },
         {
             title: "Online Appointments",
@@ -45,12 +45,12 @@ export default function Landing() {
             title: "Lab Reports",
             description: "Access your medical reports anytime, anywhere.",
             icon: "📑",
-        },
-        {
-            title: "Emergency Support",
-            description: "24/7 emergency response and ambulance services.",
-            icon: "🚑",
-        },
+        }
+        // {
+        //     title: "Emergency Support",
+        //     description: "24/7 emergency response and ambulance services.",
+        //     icon: "🚑",
+        // },
     ];
 
     const [formData, setFormData] = useState({
@@ -68,8 +68,8 @@ export default function Landing() {
         <div className="main-container">
             <header className="bg-light text-center py-5">
                 <div className="container">
-                    <h1 className="display-4 head-text">Efficient Hospital Management</h1>
-                    <p className="lead">Real-time patient care, queue management, and inventory tracking <br /> <span className="small">Providing quality healthcare services with advanced technology.</span></p>
+                    <h1 className="display-4 head-text">Hospital Management System</h1>
+                    <p className="lead">Real-time patient care using Centralized Database<br /> <span className="small">Providing quality healthcare services.</span></p>
                     <button onClick={() => navigate("/appointment")} className="btn btn-primary btn-lg book-btn" >
                         Book an Appointment
                     </button>
@@ -81,20 +81,20 @@ export default function Landing() {
                     <div className="row">
                         <div className="col-md-4 col-12 d-flex mb-4">
                             <div className="card text-center p-3 shadow key-card h-100 w-100">
-                                <h5>Live OPD Queue</h5>
-                                <p>Track real-time queue status and estimated wait times.</p>
+                                <h5>Centralized Database</h5>
+                                <p>All in one access point for public and private medical sector.</p>
                             </div>
                         </div>
                         <div className="col-md-4 col-12 d-flex mb-4">
                             <div className="card text-center p-3 shadow key-card h-100 w-100">
-                                <h5>Bed Availability</h5>
-                                <p>Instant updates on available beds and admission requests.</p>
+                                <h5>Paperless Initiative</h5>
+                                <p>Reduce your overhead for medical paperworks!</p>
                             </div>
                         </div>
                         <div className="col-md-4 col-12 d-flex mb-4">
                             <div className="card text-center p-3 shadow key-card h-100 w-100">
-                                <h5>Medicine Tracking</h5>
-                                <p>Automated inventory management for medicine and consumables.</p>
+                                <h5>Seamless Security</h5>
+                                <p>On the go verification for checkups.</p>
                             </div>
                         </div>
                     </div>
@@ -107,16 +107,13 @@ export default function Landing() {
                             <Image src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2906&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Hospital" fluid rounded />
                         </Col>
                         <Col md={6}>
-                            <h2 className="">About Our Hospital</h2>
+                            <h2 className="">About Our Portal</h2>
                             <p className="about-p">
                                 We are committed to providing <strong>top-quality healthcare services</strong> with advanced medical technology and a highly skilled team of professionals. Our goal is to ensure <strong>efficient patient care, real-time monitoring, and seamless hospital management</strong>.
                             </p>
                             <p className="about-p">
                                 Our hospital is designed to cater to <strong>all medical needs</strong>, ensuring <strong>quick response, well-managed OPD, and an advanced inventory system</strong> to keep medicines and resources available at all times.
                             </p>
-                            <Button variant="primary" size="lg" className="learn" onClick={() => navigate("/about-more")}>
-                                Learn More
-                            </Button>
                         </Col>
                     </Row>
                 </Container>
@@ -139,7 +136,7 @@ export default function Landing() {
                     </Row>
                 </Container>
             </section>
-            <div id="opd-appointment" className="bg-light w-100 py-5">
+            {/* <div id="opd-appointment" className="bg-light w-100 py-5">
                 <Container>
                     <h2 className="text-center mb-4">Book an OPD Appointment</h2>
                     <Row className="justify-content-center">
@@ -170,7 +167,7 @@ export default function Landing() {
                         </Col>
                     </Row>
                 </Container>
-            </div>
+            </div> */}
             <div id="contact" className="contact-section bg-light py-5">
                 <Container>
                     <h2 className="text-center mb-4">Contact Us</h2>
