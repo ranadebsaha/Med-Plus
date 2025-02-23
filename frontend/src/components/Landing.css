@@ -5,35 +5,33 @@
 .book-btn {
     font-weight: 500;
     color: white !important;
-    border: 1px solid #052963 !important;
-    background-color: #052963 !important;
+    border: 1px solid #2b65f0  !important;
+    background-color: #2b65f0 !important;
 }
 
 .book-btn:hover {
-    background-color: #fbac1b !important;
-    border: 1px solid #fbac1b !important;
+    background-color: #163aac !important;
+    border: 1px solid #163aac !important;
     color: white !important;
 }
 
 .features-text {
     font-weight: 600 !important;
-    color: #c2c0c1;
 }
 
 .key-card {
-    background-color: #e5e2db !important;
     border: 1px solid #c2c0c1 !important;
 }
 
 .learn {
-    background-color: #052963 !important;
-    background: #052963 !important;
-    border: 1px solid #052963 !important;
+    background-color: #2b65f0 !important;
+    background: #2b65f0 !important;
+    border: 1px solid #2b65f0 !important;
 }
 
 .learn:hover {
-    background-color: #fbac1b !important;
-    border: 1px solid #fbac1b !important;
+    background-color: #163aac !important;
+    border: 1px solid #163aac !important;
     color: white !important;
 }
 
@@ -42,25 +40,25 @@
 }
 
 .opt-btn {
-    background-color: #052963 !important;
-    background: #052963 !important;
-    border: 1px solid #052963 !important;
+    background-color: #2b65f0 !important;
+    background: #2b65f0 !important;
+    border: 1px solid #2b65f0 !important;
 }
 
 .opt-btn:hover {
-    background-color: #fbac1b !important;
-    border: 1px solid #fbac1b !important;
+    background-color: #163aac !important;
+    border: 1px solid #163aac !important;
     color: white !important;
 }
 
 .submit-btn {
-    background-color: #052963 !important;
-    background: #052963 !important;
-    border: 1px solid #052963 !important;
+    background-color: #2b65f0 !important;
+    background: #2b65f0 !important;
+    border: 1px solid #2b65f0 !important;
 }
 
 .submit-btn:hover {
-    background-color: #fbac1b !important;
-    border: 1px solid #fbac1b !important;
+    background-color: #163aac !important;
+    border: 1px solid #163aac !important;
     color: white !important;
 }
