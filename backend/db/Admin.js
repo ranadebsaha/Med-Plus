@@ -9,7 +9,15 @@ const adminSchema=new mongoose.Schema({
     mobile_no:String,
     email:String,
     address:String,
-    password:String
+    password:String,
+    center:String,
+    patient:[
+        {
+          aadhar: String,
+          date: String,
+          cause: String,
+        },
+      ],
 });
 
 module.exports=mongoose.model("admins",adminSchema);
