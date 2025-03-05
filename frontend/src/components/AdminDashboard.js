@@ -19,7 +19,6 @@ const AdminDashboard = () => {
   const stats = [
     { title: "Total Patients", count: 120 },
     { title: "Appointments Today", count: 15 },
-    { title: "Available Doctors", count: 8 },
     { title: "New Registrations", count: 25 },
     { title: "Pending Reports", count: 10 },
     { title: "Discharged Patients", count: 30 },
@@ -64,7 +63,7 @@ const AdminDashboard = () => {
               </div>
             </div>
           ))}
-          <li className="nav-item">
+          <li className="nav-item display">
             <Link className="btn btn-info item-center" to={'/patient/search'}>
               <FaUserEdit className="me-2" /> Check Up Patient
             </Link>

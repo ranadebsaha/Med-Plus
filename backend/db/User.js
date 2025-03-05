@@ -16,6 +16,11 @@ const userSchema=new mongoose.Schema({
           url: String,
         },
       ],
+    history: [{
+      aadhar: String,
+          date: String,
+          cause: String,
+    }]
 });
 
 module.exports=mongoose.model("users",userSchema);

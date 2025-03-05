@@ -17,6 +17,7 @@ import Upload from "./components/Upload";
 import Profile from "./components/Profile";
 import SearchPatient from "./components/SearchPatient";
 import PatientDetail from "./components/PatientDetail";
+import PatientForm from "./components/PatientForm";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -47,7 +48,7 @@ function App() {
         <Route path="/admin/patient/show/:id" element={<PatientDetail />} />
         <Route path="/patient/show/:id" element={<ShowPatientData />} />
         <Route path="/patient/search" element={<SearchPatient />} />
-        {/* <Route path="/search/:id" element={< />} /> */}
+        <Route path="/patient/book" element={< PatientForm/>} />
       </Routes>
     </BrowserRouter>
   );

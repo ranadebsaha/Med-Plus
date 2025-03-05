@@ -4,15 +4,7 @@ import { Container, Row, Col, Button, Image, Card, Form } from "react-bootstrap"
 import "../styles/Landing.css";
 
 export default function Landing() {
-    // const [name, setName] = useState("");
-    // const [date, setDate] = useState("");
-    // const [department, setDepartment] = useState("");
     const navigate = useNavigate();
-
-    // const handleAppointmentSubmit = (e) => {
-    //     e.preventDefault();
-    //     alert(`Appointment booked for ${name} on ${date}`);
-    // };
 
     const handleContactSubmit = (e) => {
         e.preventDefault();
@@ -70,7 +62,7 @@ export default function Landing() {
                 <div className="container">
                     <h1 className="display-4 head-text">Hospital Management System</h1>
                     <p className="lead">Real-time patient care using Centralized Database<br /> <span className="small">Providing quality healthcare services.</span></p>
-                    <button onClick={() => navigate("/appointment")} className="btn btn-primary btn-lg book-btn" >
+                    <button onClick={() => navigate("/patient/book")} className="btn btn-primary btn-lg book-btn" >
                         Book an Appointment
                     </button>
                 </div>

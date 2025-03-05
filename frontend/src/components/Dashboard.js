@@ -38,32 +38,8 @@ const Dashboard = () => {
                     <div className="col">
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title">Total Patients</h5>
-                                <p className="card-text fs-2">120</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title">Appointments Today</h5>
-                                <p className="card-text fs-2">15</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="card">
-                            <div className="card-body">
                                 <h5 className="card-title">Available Doctors</h5>
                                 <p className="card-text fs-2">8</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title">New Registrations</h5>
-                                <p className="card-text fs-2">25</p>
                             </div>
                         </div>
                     </div>
@@ -75,14 +51,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col">
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title">Discharged Patients</h5>
-                                <p className="card-text fs-2">30</p>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>

@@ -7,6 +7,9 @@ function Profile() {
   const params = useParams();
   const u1 = localStorage.getItem('user');
   const a1 = localStorage.getItem('admin');
+  useEffect(() => {
+    getProfile();
+  });
 
   const getProfile = async (event) => {
     if (u1) {
@@ -30,9 +33,7 @@ function Profile() {
     }
   };
 
-  useEffect(() => {
-    getProfile();
-  }, []);
+  
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">

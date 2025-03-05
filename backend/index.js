@@ -155,18 +155,18 @@ const upload = multer({
             let user = await User.findOne({ _id: req.params.id });
             const fileExt = path.extname(file.originalname);
 
-            let finalFileName=`${user.aadhar}-${file.originalname}`;
+            let finalFileName = `${user.aadhar}-${file.originalname}`;
             cb(null, finalFileName);
         }
     })
 }).single("file");
 
 app.put("/upload/:id", upload, async (req, resp) => {
-    
+
     // let file1='/uploads/'+req.file.filename;
-    const fileExt = path.extname(req.file.filename).toLowerCase(); 
-            const fileType = fileExt === ".pdf" ? "pdf" : "image";
-            const fileUrl = `/uploads/${req.file.filename}`;
+    const fileExt = path.extname(req.file.filename).toLowerCase();
+    const fileType = fileExt === ".pdf" ? "pdf" : "image";
+    const fileUrl = `/uploads/${req.file.filename}`;
     let result = await User.findByIdAndUpdate(
         req.params.id,
         { $push: { doc: JSON.stringify({ name: req.file.filename, type: fileType, url: fileUrl }) } },
@@ -176,19 +176,40 @@ app.put("/upload/:id", upload, async (req, resp) => {
 });
 
 // Search Patient
-app.get('/search/:key',verifyToken,async (req,resp)=>{
-    let user=await User.find({
-        "$or":[
-            {aadhar:{$regex:req.params.key}}
+app.get('/search/:key', verifyToken, async (req, resp) => {
+    let user = await User.find({
+        "$or": [
+            { aadhar: { $regex: req.params.key } }
         ]
     });
-    if(user){
+    if (user) {
         resp.send(user);
-    }else{
-        resp.send({result:'No result Found'});
+    } else {
+        resp.send({ result: 'No result Found' });
     }
 });
 
+//update patient information in the admin
+app.put('/admin/patient', verifyToken, async (req, resp) => {
+    const { admin_id, patient } = req.body;
+    let result = await Admin.updateOne(
+        { _id: admin_id},
+        { $push: { patient: patient } },
+        { new: true }
+
+    )
+    resp.send(result);
+});
+
+//update patient information in the patient db
+app.put('/patient/history:id', verifyToken, async (req, resp) => {
+    let result = await User.updateOne(
+        { _id: req.params.id },
+        { $push: { history: req.body.patient } },
+        { new: true }
+    )
+    resp.send(result);
+});
 //Jwt Verification
 function verifyToken(req, resp, next) {
     let token = req.headers['authorization'];
