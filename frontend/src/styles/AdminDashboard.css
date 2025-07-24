@@ -1,0 +1,23 @@
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  background-color: #343a40; 
+}
+
+.nav-link {
+  font-size: 1.1rem;
+  transition: all 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: #495057;
+  border-radius: 8px;
+  color: #ffffff !important;
+}
+
+.sidebar h3 {
+  font-size: 1.5rem;
+}

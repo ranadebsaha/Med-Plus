@@ -48,7 +48,7 @@ function AdminUpdate() {
       }
     });
     result = await result.json();
-    navigate('/admin/dashboard');
+    navigate('/doctor/dashboard');
   };
 
   return (
@@ -116,7 +116,7 @@ function AdminUpdate() {
           <Button variant="success" onClick={updateAdmin} className="me-2 px-4 update-btn">
             Update
           </Button>
-          <Link className="btn btn-primary px-4 login-btn" to="/admin/dashboard">
+          <Link className="btn btn-primary px-4 login-btn" to="/doctor/dashboard">
             Back
           </Link>
         </div>

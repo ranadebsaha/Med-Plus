@@ -62,7 +62,7 @@ export default function Landing() {
                 <div className="container">
                     <h1 className="display-4 head-text">Hospital Management System</h1>
                     <p className="lead">Real-time patient care using Centralized Database<br /> <span className="small">Providing quality healthcare services.</span></p>
-                    <button onClick={() => navigate("/patient/book")} className="btn btn-primary btn-lg book-btn" >
+                    <button onClick={() => navigate("/login")} className="btn btn-primary btn-lg book-btn" >
                         Book an Appointment
                     </button>
                 </div>

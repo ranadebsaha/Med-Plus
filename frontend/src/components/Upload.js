@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useRef } from 'react';
+import Swal from 'sweetalert2';
 
 const Upload = () => {
     const [file, setFile] = useState(null);
@@ -32,22 +33,36 @@ const Upload = () => {
     };
 
     const handleUpload = async () => {
+        if (!file) {
+            Swal.fire('Error', 'Please select a file to upload.', 'error');
+            return;
+        }
+
         const formData = new FormData();
         formData.append("file", file);
 
-        let result = await fetch(`http://localhost:5000/upload/${params.id}`, {
-            method: "put",
-            body: formData,
-        });
-        result = await result.json();
+        try {
+            const res = await fetch(`http://localhost:5000/upload/${params.id}`, {
+                method: "PUT",
+                body: formData,
+            });
 
-        if (result) {
-            alert(`Uploading: ${file.name} as ${file.fileType} ${file.fileType === "Other" ? `with details:` : ''}`);
-            navigate(-1);
+            const result = await res.json();
 
-            alert(`Uploading: ${file.name}`);
-            navigate('/patient/search');
-
+            if (res.ok) {
+                await Swal.fire({
+                    title: 'Success!',
+                    text: `${file.name} uploaded successfully.`,
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                });
+                navigate('/patient/search/staff');
+            } else {
+                throw new Error(result.message || 'Upload failed');
+            }
+        } catch (err) {
+            console.error(err);
+            Swal.fire('Upload Failed', err.message || 'Something went wrong.', 'error');
         }
     };
 
@@ -56,7 +71,13 @@ const Upload = () => {
             <div className="card shadow-lg p-4 rounded" style={{ maxWidth: "500px", width: "100%" }}>
                 <h2 className="text-center mb-4">Upload File</h2>
                 <div className="mb-3">
-                    <input type="file" className="form-control form-control-lg" onChange={handleFileChange} ref={fileInputRef} accept=".pdf,.jpg,.jpeg" />
+                    <input
+                        type="file"
+                        className="form-control form-control-lg"
+                        onChange={handleFileChange}
+                        ref={fileInputRef}
+                        accept=".pdf,.jpg,.jpeg"
+                    />
                 </div>
                 {error && <p className="text-danger text-center">{error}</p>}
                 {file && (

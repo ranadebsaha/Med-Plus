@@ -9,6 +9,8 @@ const userSchema=new mongoose.Schema({
     email:String,
     address:String,
     password:String,
+    otp: String,
+    otpCreatedAt: Date,
     doc: [
         {
           name: String,
