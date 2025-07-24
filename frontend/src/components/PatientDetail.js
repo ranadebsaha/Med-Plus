@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import Swal from 'sweetalert2';
 
 const PatientDetail = () => {
@@ -8,6 +8,9 @@ const PatientDetail = () => {
   const [documents, setDocuments] = useState([]); 
   const [patientData,setPatientData]=useState([]);
   const params = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const opd_id = queryParams.get("opd_id");
   const navigate=useNavigate();
   useEffect(() => {
         getPatientDetails();
@@ -42,49 +45,70 @@ const PatientDetail = () => {
           setDocuments(formattedDocs);
         }
     }
-const updateHistory= async()=>{
-const { value: cause } = await Swal.fire({
-  title: "Enter the Disease of this Patient",
-  input: "text",
-  inputLabel: "Disease of this Patient",
-  showCancelButton: true,
-  inputValidator: (value) => {
-    if (!value) {
-      return "You need to write the Disease";
-    }
-  }
-});
-if (cause) {
-  const date = new Date().toISOString();
-  let patient={
-    aadhar: patientData.aadhar,
-    date: date,
-    cause:cause
-  }
-  let adminData = localStorage.getItem('admin');
-  let admin_id = JSON.parse(adminData)._id;
-  console.log("Sending admin_id:", admin_id);
-  let resultA = await fetch('http://localhost:5000/admin/patient', {
-    method: 'put',
-    body: JSON.stringify({ patient, admin_id }),
-    headers: {
-      'content-type': 'application/json',
-      authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+
+
+const updateHistory = async () => {
+  const { value: cause } = await Swal.fire({
+    title: "Enter the Disease of this Patient",
+    input: "text",
+    inputLabel: "Disease of this Patient",
+    showCancelButton: true,
+    inputValidator: (value) => {
+      if (!value) {
+        return "You need to write the Disease";
+      }
     }
   });
-  // let resultP = await fetch(`http://localhost:5000/patient/history/${params.id}`, {
-  //   method: 'put',
-  //   body: JSON.stringify({patient}),
-  //   headers: {
-  //     'content-type': 'application/json',
-  //     authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
-  //   }
-  // });
-  if(resultA){
-    navigate(-1);
+
+  if (cause) {
+    const date = new Date().toISOString();
+    const patient = {
+      aadhar: patientData.aadhar,
+      date,
+      cause
+    };
+
+    const adminData = localStorage.getItem('admin');
+    const admin_id = JSON.parse(adminData)._id;
+    const patient_id = patientData._id;
+
+    try {
+      const response = await fetch('http://localhost:5000/admin/update-patient-history', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+        },
+       body: JSON.stringify({ admin_id, patient_id, patient, opd_id })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Patient Successfully Checked Up',
+          text: 'Patient history successfully updated.'
+        });
+        navigate(-1);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Update Failed',
+          text: result.message || 'Something went wrong'
+        });
+      }
+
+    } catch (error) {
+      console.error("Error updating history:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Server Error',
+        text: 'Unable to connect to the server.'
+      });
+    }
   }
-}
-}
+};
 
 
   return (

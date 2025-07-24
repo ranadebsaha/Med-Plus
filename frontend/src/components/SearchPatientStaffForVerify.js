@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import {
-    Navbar, Nav, Container, Button, Form, Spinner
+    Navbar, Nav, Container, Button, Form, Spinner, Modal
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Logo from "../assets/Logo.svg";
 
-const SearchPatient = () => {
+const SearchPatientStaffForVerify = () => {
     const [patients, setPatients] = useState([]);
     const [searchKey, setSearchKey] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedPatient, setSelectedPatient] = useState(null);
+    const [form, setForm] = useState({ doctor: '', bed_no: '' });
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,7 +23,7 @@ const SearchPatient = () => {
     const fetchAllAdmissions = async () => {
         try {
             setLoading(true);
-            const response = await fetch("http://localhost:5000/hospital/admission/active", {
+            const response = await fetch("http://localhost:5000/hospital/admission/pending", {
                 headers: {
                     authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
                 },
@@ -44,7 +48,7 @@ const SearchPatient = () => {
 
         try {
             setLoading(true);
-            const res = await fetch(`http://localhost:5000/admission/patient/active/search/${key}`, {
+            const res = await fetch(`http://localhost:5000/admission/patient/pending/search/${key}`, {
                 headers: {
                     authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
                 },
@@ -55,6 +59,50 @@ const SearchPatient = () => {
             console.error("Search error:", error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const openVerifyModal = (admission) => {
+        setSelectedPatient(admission);
+        setForm({
+            doctor: admission.doctor || '',
+            bed_no: admission.bed_no || ''
+        });
+        setShowModal(true);
+    };
+
+    const handleVerify = async () => {
+        if (!form.doctor || !form.bed_no) {
+            Swal.fire("Missing Info", "Please enter doctor name and bed number", "warning");
+            return;
+        }
+
+        try {
+            const res = await fetch(`http://localhost:5000/hospital/admit/update/${selectedPatient._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
+                },
+                body: JSON.stringify({
+                    doctor: form.doctor,
+                    bed_no: form.bed_no,
+                    status: "active"
+                })
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                Swal.fire("Verified", result.message, "success");
+                setShowModal(false);
+                fetchAllAdmissions();
+            } else {
+                Swal.fire("Failed", result.message || "Something went wrong", "error");
+            }
+        } catch (err) {
+            console.error(err);
+            Swal.fire("Error", "Server error occurred", "error");
         }
     };
 
@@ -109,7 +157,7 @@ const SearchPatient = () => {
 
                             return (
                                 <div key={index} className="card shadow p-4 mb-3">
-                                    <h4 className="text-center mb-3">Admitted Patient</h4>
+                                    <h4 className="text-center mb-3">Pending Patient</h4>
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item">
                                             <strong>Name:</strong> {patient?.name || 'N/A'}
@@ -129,9 +177,9 @@ const SearchPatient = () => {
                                     </ul>
                                     <Button
                                         className="btn btn-primary mt-3"
-                                        onClick={() => navigate(`/patient/admission/data/${admission._id}`)}
+                                        onClick={() => openVerifyModal(admission)}
                                     >
-                                        View Details
+                                        Verify Patient
                                     </Button>
                                 </div>
                             );
@@ -141,8 +189,44 @@ const SearchPatient = () => {
                     )}
                 </Container>
             </main>
+
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Verify Admission</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Doctor Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={form.doctor}
+                                onChange={(e) => setForm({ ...form, doctor: e.target.value })}
+                                placeholder="Enter doctor's name"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Bed Number</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={form.bed_no}
+                                onChange={(e) => setForm({ ...form, bed_no: e.target.value })}
+                                placeholder="Enter bed number"
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleVerify}>
+                        Confirm Verify
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
 
-export default SearchPatient;
+export default SearchPatientStaffForVerify;

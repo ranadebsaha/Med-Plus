@@ -15,7 +15,7 @@ const ShowPatientData = () => {
     const getPatientDetails = async () => {
       let result = await fetch(`http://localhost:5000/user/${params.id}`, {
         headers: {
-          authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+          authorization: `bearer ${(localStorage.getItem('token'))}`
         }
       });
       result = await result.json();

@@ -15,7 +15,7 @@ function Profile() {
     if (u1) {
       let result = await fetch(`http://localhost:5000/user/${params.id}`, {
         headers: {
-          authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+          authorization: `bearer ${(localStorage.getItem('token'))}`
         }
       });
       result = await result.json();
@@ -51,7 +51,7 @@ function Profile() {
           </Row>
         </Card.Body>
         <div className="text-center mt-3">
-          <Link to={u1 ? '/dashboard' : '/admin/dashboard'} className="btn btn-primary btn-lg w-50 login-btn">
+          <Link to={u1 ? '/dashboard' : '/doctor/dashboard'} className="btn btn-primary btn-lg w-50 login-btn">
             Back
           </Link>
         </div>

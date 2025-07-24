@@ -17,6 +17,12 @@ const Dashboard = () => {
                 <Link to={'/profile/' + user._id} className="btn btn-primary w-100 mb-2 d-flex align-items-center">
                     <FaUserPlus className="me-2" /> Profile
                 </Link>
+                <Link to={'/patient/book'} className="btn btn-primary w-100 mb-2 d-flex align-items-center">
+                    <FaUserPlus className="me-2" /> Book OPD Appointment
+                </Link>
+                <Link to={'/patient/admission'} className="btn btn-primary w-100 mb-2 d-flex align-items-center">
+                    <FaUserPlus className="me-2" /> Admission Patient
+                </Link>
                 <Link to={'/patient/update/' + user._id} className="btn btn-info w-100 mb-2 d-flex align-items-center">
                     <FaUserEdit className="me-2" /> Update Profile
                 </Link>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import "../styles/Register.css";
 
 function Register() {
@@ -16,30 +17,64 @@ function Register() {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  const collectData = async () => {
-    if (!aadhar || !name || !dob || !gender || !mobile_no || !email || !address || !password || !cpassword) {
-      setError(true);
-      return;
-    }
-
-    let result = await fetch("http://localhost:5000/register", {
-      method: "POST",
-      body: JSON.stringify({ aadhar, name, dob, gender, mobile_no, email, address, password }),
-      headers: { "Content-Type": "application/json" },
-    });
-    
-    result = await result.json();
-    if (result) {
-      navigate("/login");
-    }
-  };
-
   useEffect(() => {
     const auth = localStorage.getItem("user");
     if (auth) {
       navigate("/dashboard");
     }
   }, [navigate]);
+
+  const isDOBValid = () => {
+    const today = new Date();
+    const enteredDate = new Date(dob);
+    return enteredDate < today;
+  };
+
+  const collectData = async () => {
+    if (
+      !aadhar || !name || !dob || !gender || !mobile_no ||
+      !email || !address || !password || !cpassword
+    ) {
+      setError(true);
+      Swal.fire("Missing Fields", "Please fill all the fields", "warning");
+      return;
+    }
+
+    if (!isDOBValid()) {
+      Swal.fire("Invalid Date of Birth", "DOB must be before today", "warning");
+      return;
+    }
+
+    if (password !== cpassword) {
+      Swal.fire("Password Mismatch", "Passwords do not match", "error");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          aadhar, name, dob, gender, mobile_no, email, address, password
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        Swal.fire("Registration Failed", result?.result || "An error occurred", "error");
+        return;
+      }
+
+      Swal.fire("Success", "Registered successfully", "success").then(() => {
+        navigate("/login");
+      });
+
+    } catch (error) {
+      console.error("Registration Error:", error);
+      Swal.fire("Error", "Something went wrong. Please try again.", "error");
+    }
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light px-3" style={{ paddingTop: "80px", paddingBottom: "40px" }}>
@@ -51,23 +86,38 @@ function Register() {
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Aadhar Card Number</Form.Label>
-                  <Form.Control type="number" value={aadhar} onChange={(e) => setAadhar(e.target.value)} placeholder="Enter Aadhar Card Number" />
+                  <Form.Control
+                    type="number"
+                    value={aadhar}
+                    onChange={(e) => setAadhar(e.target.value)}
+                    placeholder="Enter Aadhar Card Number"
+                  />
                   {error && !aadhar && <span className="text-danger">Enter a valid Aadhar ID</span>}
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Name</Form.Label>
-                  <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter Full Name" />
+                  <Form.Control
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter Full Name"
+                  />
                   {error && !name && <span className="text-danger">Enter a valid Name</span>}
                 </Form.Group>
               </Col>
             </Row>
+
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Date of Birth</Form.Label>
-                  <Form.Control type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
+                  <Form.Control
+                    type="date"
+                    value={dob}
+                    onChange={(e) => setDob(e.target.value)}
+                  />
                   {error && !dob && <span className="text-danger">Enter Date of Birth</span>}
                 </Form.Group>
               </Col>
@@ -83,51 +133,81 @@ function Register() {
                 </Form.Group>
               </Col>
             </Row>
+
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Mobile Number</Form.Label>
-                  <Form.Control type="number" value={mobile_no} onChange={(e) => setMobile_no(e.target.value)} placeholder="Enter Mobile Number" />
+                  <Form.Control
+                    type="number"
+                    value={mobile_no}
+                    onChange={(e) => setMobile_no(e.target.value)}
+                    placeholder="Enter Mobile Number"
+                  />
                   {error && !mobile_no && <span className="text-danger">Enter a valid Mobile No</span>}
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Email ID</Form.Label>
-                  <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter Email" />
+                  <Form.Control
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter Email"
+                  />
                   {error && !email && <span className="text-danger">Enter a valid Email</span>}
                 </Form.Group>
               </Col>
             </Row>
+
             <Form.Group className="mb-3">
               <Form.Label>Address</Form.Label>
-              <Form.Control type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Enter Address" />
+              <Form.Control
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter Address"
+              />
               {error && !address && <span className="text-danger">Enter a valid Address</span>}
             </Form.Group>
+
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter Password" />
+                  <Form.Control
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter Password"
+                  />
                   {error && !password && <span className="text-danger">Enter Password</span>}
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Confirm Password</Form.Label>
-                  <Form.Control type="password" value={cpassword} onChange={(e) => setCpassword(e.target.value)} placeholder="Confirm Password" />
+                  <Form.Control
+                    type="password"
+                    value={cpassword}
+                    onChange={(e) => setCpassword(e.target.value)}
+                    placeholder="Confirm Password"
+                  />
                   {error && !cpassword && <span className="text-danger">Confirm Password</span>}
                 </Form.Group>
               </Col>
             </Row>
+
             <div className="d-grid mt-3">
               <Button variant="primary" size="lg" className="register-btn" onClick={collectData}>
                 Register
               </Button>
             </div>
+
             <div className="text-center mt-3">
               <Form.Text className="text-muted">
-                Already Registered? {" "}
+                Already Registered?{" "}
                 <Link to="/login" className="text-primary fw-bold">
                   Click here
                 </Link>
