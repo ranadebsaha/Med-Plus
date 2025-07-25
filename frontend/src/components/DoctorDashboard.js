@@ -9,6 +9,7 @@ import {
   FaHistory
 } from "react-icons/fa";
 import "../styles/AdminDashboard.css";
+import Swal from 'sweetalert2';
 
 const DoctorDashboard = () => {
   const navigate = useNavigate();
@@ -19,11 +20,22 @@ const DoctorDashboard = () => {
   }, [admin, navigate]);
 
   const logout = () => {
-    if (window.confirm("Are you sure you want to log out?")) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You will be logged out of the system.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, logout'
+  }).then((result) => {
+    if (result.isConfirmed) {
       localStorage.clear();
-      navigate("/");
+      navigate('/');
+      Swal.fire('Logged Out!', 'You have been successfully logged out.', 'success');
     }
-  };
+  });
+};
 
   const stats = [
     { title: "Total Patients", count: 120 },
@@ -70,7 +82,7 @@ const DoctorDashboard = () => {
             </Link>
           </li>
           <li className="nav-item mb-2">
-            <Link to="/patient/search" className="nav-link text-white">
+            <Link to={`/doctor/history/${admin._id}`} className="nav-link text-white">
               <FaHistory className="me-2" />
               History
             </Link>

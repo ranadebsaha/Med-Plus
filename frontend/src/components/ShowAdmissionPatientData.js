@@ -24,6 +24,9 @@ const ShowAdmissionPatientData = () => {
   const [showDischargeModal, setShowDischargeModal] = useState(false);
   const [dischargeDoctor, setDischargeDoctor] = useState("");
   const [dischargeNote, setDischargeNote] = useState("");
+  const [loadingSummary, setLoadingSummary] = useState(false);
+  const [summaryText, setSummaryText] = useState("");
+  const [showSummaryModal, setShowSummaryModal] = useState(false);
 
   useEffect(() => {
     loadDetails();
@@ -128,6 +131,33 @@ const ShowAdmissionPatientData = () => {
     }
   };
 
+  const handleGenerateSummary = async () => {
+    setLoadingSummary(true);
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const res = await fetch(`http://localhost:5000/generate-summary/${patient._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok && data.summary) {
+        setSummaryText(data.summary);
+        setShowSummaryModal(true);
+      } else {
+        Swal.fire("Error", data.message || "Summary generation failed", "error");
+      }
+    } catch (error) {
+      console.error("Summary error:", error);
+      Swal.fire("Error", "Something went wrong while generating summary", "error");
+    } finally {
+      setLoadingSummary(false);
+    }
+  };
+
   if (loading) {
     return <h5 className="text-center mt-5 text-muted">Loading Patient Admission Info...</h5>;
   }
@@ -221,8 +251,18 @@ const ShowAdmissionPatientData = () => {
 
           {/* Documents */}
           <div className="card mb-4 shadow-sm">
-            <div className="card-header bg-secondary text-white">
-              <h4>Uploaded Documents</h4>
+            <div className="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+              <h4 className="mb-0">Uploaded Documents</h4>
+              <button className="btn btn-warning btn-sm" onClick={handleGenerateSummary} disabled={loadingSummary}>
+                {loadingSummary ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Generating...
+                  </>
+                ) : (
+                  "Generate Summary"
+                )}
+              </button>
             </div>
             <div className="card-body d-flex gap-3 flex-wrap">
               {documents.map((file, i) => (
@@ -250,6 +290,22 @@ const ShowAdmissionPatientData = () => {
               ))}
             </div>
           </div>
+
+          {showSummaryModal && (
+            <div className="modal show d-block" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+              <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Document Summary</h5>
+                    <button className="btn-close" onClick={() => setShowSummaryModal(false)}></button>
+                  </div>
+                  <div className="modal-body">
+                    <p style={{ whiteSpace: "pre-wrap" }}>{summaryText}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Footer Actions */}
           <div className="d-flex justify-content-end gap-2 mb-5">

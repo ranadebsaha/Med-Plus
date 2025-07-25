@@ -1,15 +1,29 @@
 import React from 'react';
 import { FaUserPlus, FaSignInAlt, FaUserEdit } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Dashboard = () => {
     const navigate = useNavigate();
     let user = JSON.parse(localStorage.getItem('user'));
 
     const logout = () => {
-        localStorage.clear();
-        navigate('/');
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You will be logged out!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, Logout',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.clear();
+      Swal.fire('Logged Out!', 'You have been logged out successfully.', 'success');
+      navigate('/');
     }
+  });
+};
     return (
         <div className="d-flex flex-column flex-md-row h-100" style={{ height: '100vh' }}>
             <div className="bg-dark text-white p-4 d-flex flex-column" style={{ width: '250px', minHeight: '100vh' }}>
@@ -28,6 +42,9 @@ const Dashboard = () => {
                 </Link>
                 <Link to={'/patient/show/' + user._id} className="btn btn-info w-100 mb-2 d-flex align-items-center">
                     <FaUserEdit className="me-2" /> Show Documents
+                </Link>
+                <Link to={`/patient/history/${user._id}`} className="btn btn-info w-100 mb-2 d-flex align-items-center">
+                    <FaUserEdit className="me-2" /> History
                 </Link>
                 <button onClick={logout} className="btn btn-secondary w-100 mb-2 d-flex align-items-center">
                     <FaSignInAlt className="me-2" /> Logout

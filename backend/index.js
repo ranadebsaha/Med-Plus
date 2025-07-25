@@ -13,12 +13,28 @@ const { json } = require('stream/consumers');
 const jwtkey = process.env.JWT_SECRET || "rds";
 // const nodemailer = require('nodemailer');
 const transporter = require('./db/mailer');
+const fs = require("fs");
+const pdfParse = require("pdf-parse");
+const Tesseract = require("tesseract.js");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const rateLimit = require("express-rate-limit");
+require('dotenv').config();
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+app.use(
+  "/generate-summary/:id",
+  rateLimit({
+    windowMs: 60 * 1000,
+    max: 5,
+    message: "Too many requests. Please try again later.",
+  })
+);
 
 //User Register
 app.post("/register", async (req, resp) => {
@@ -149,6 +165,28 @@ app.get('/user/:id', verifyToken, async (req, resp) => {
   }
 });
 
+//all user Fetch
+app.get('/user', verifyToken, async (req, resp) => {
+  let result = await User.find();
+  if (result) {
+    resp.send(result);
+  } else {
+    resp.send({ result: 'no record found' });
+  }
+});
+
+
+//all Admin Fetch
+app.get('/admin', verifyToken, async (req, resp) => {
+  let result = await Admin.find();
+  if (result) {
+    resp.send(result);
+  } else {
+    resp.send({ result: 'no record found' });
+  }
+});
+
+
 //One User Update
 app.put('/user/:id', verifyToken, async (req, resp) => {
   let result = await User.updateOne(
@@ -217,6 +255,25 @@ app.get('/search/user/:key', verifyToken, async (req, resp) => {
   try {
     const users = await User.find({
       aadhar: { $regex: req.params.key }
+    });
+
+    if (users && users.length > 0) {
+      resp.send(users);
+    } else {
+      resp.status(404).send({ result: 'No result Found' });
+    }
+  } catch (error) {
+    console.error("Search error:", error);
+    resp.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+
+// Search Patient from users DB
+app.get('/search/admin/:key', verifyToken, async (req, resp) => {
+  try {
+    const users = await Admin.find({
+      govt_id: { $regex: req.params.key }
     });
 
     if (users && users.length > 0) {
@@ -718,6 +775,94 @@ app.get('/admission/patient/discharged/search/:key', verifyToken, async (req, re
   }
 });
 
+
+//summary using gemini
+app.post("/generate-summary/:id", async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).send({ message: "Invalid patient ID" });
+    }
+
+    const patient = await User.findById(req.params.id);
+    if (!patient || !patient.doc || !Array.isArray(patient.doc)) {
+      return res.status(404).send({ message: "Patient or documents not found" });
+    }
+
+    let combinedText = "";
+    for (const docEntry of patient.doc) {
+      let doc;
+      try {
+        doc = JSON.parse(docEntry);
+      } catch (error) {
+        console.warn(`Invalid JSON in doc entry: ${docEntry}`);
+        continue;
+      }
+
+      const filePath = path.join(__dirname, "Uploads", path.basename(doc.url));
+      if (!fs.existsSync(filePath)) {
+        console.warn(`File not found: ${filePath}`);
+        continue;
+      }
+
+      if (doc.type === "pdf") {
+        const dataBuffer = fs.readFileSync(filePath);
+        const data = await pdfParse(dataBuffer);
+        combinedText += `\n---\n[${doc.name}]\n${data.text}\n`;
+      } else {
+        const imageText = await Tesseract.recognize(filePath, "eng");
+        combinedText += `\n---\n[${doc.name}]\n${imageText.data.text}\n`;
+      }
+    }
+
+    if (!combinedText.trim()) {
+      return res.status(400).send({ message: "No extractable content found in documents." });
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    // Include medical history in the prompt
+    const historyText = patient.history
+      ? patient.history.map((h) => `Date: ${h.date}, Cause: ${h.cause}`).join("\n")
+      : "No medical history available.";
+    const prompt = `
+      Summarize the following medical reports and diagnostic information from a patient's file in clear, simple English suitable for doctors. Focus only on relevant medical information not more than 200 words. Incorporate the patient's medical history for context:
+      Medical History:
+      ${historyText}
+      Documents:
+      ${combinedText}
+    `;
+
+    // Check token count
+    const tokenCount = await model.countTokens({ contents: [{ role: "user", parts: [{ text: prompt }] }] });
+    if (tokenCount.totalTokens > 50000) {
+      return res.status(400).send({ message: "Input too large. Please reduce document size." });
+    }
+
+    // Retry logic for 429 errors
+    const retryRequest = async (model, content, retries = 3, delay = 24000) => {
+      for (let i = 0; i < retries; i++) {
+        try {
+          return await model.generateContent(content);
+        } catch (error) {
+          if (error.status === 429 && i < retries - 1) {
+            await new Promise((resolve) => setTimeout(resolve, delay));
+            continue;
+          }
+          throw error;
+        }
+      }
+    };
+
+    const result = await retryRequest(model, { contents: [{ role: "user", parts: [{ text: prompt }] }] });
+    const text = (await result.response).text();
+
+    res.send({ summary: text });
+  } catch (error) {
+    console.error("Error summarizing documents:", error);
+    res.status(500).send({ message: "Failed to generate summary", error: error.message });
+  }
+});
 
 
 
