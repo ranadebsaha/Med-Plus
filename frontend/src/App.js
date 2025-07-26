@@ -24,6 +24,11 @@ import ShowAdmissionPatientData from "./components/ShowAdmissionPatientData";
 import StaffDashboard from "./components/StaffDashboard";
 import SearchPatientStaff from "./components/SearchPatientStaff";
 import SearchPatientStaffForVerify from "./components/SearchPatientStaffForVerify";
+import DoctorHistory from "./components/DoctorHistory";
+import PatientHistory from "./components/PatientHistory";
+import AdminDashboard from "./components/AdminDashboard";
+import ShowPatientAdmin from "./components/ShowPatientAdmin";
+import ShowAdmin from "./components/ShowAdmin";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -61,7 +66,11 @@ function App() {
         <Route path="/patient/admission/data/:id" element={< ShowAdmissionPatientData/>} />
         <Route path="/patient/search/staff" element={< SearchPatientStaff/>} />
         <Route path="/patient/search/staff/verify" element={< SearchPatientStaffForVerify/>} />
-        {/* <Route path="/patient/admission/checkup/:id" element={< AdmissionPatientCheckUp/>} /> */}
+        <Route path="/doctor/history/:id" element={< DoctorHistory/>} />
+        <Route path="/patient/history/:id" element={< PatientHistory/>} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/show/patient" element={<ShowPatientAdmin />} />
+        <Route path="/admin/show/admin" element={<ShowAdmin />} />
       </Routes>
     </BrowserRouter>
   );
